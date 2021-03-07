@@ -29,7 +29,7 @@ public class AgentControl : MonoBehaviour
             {
                 Vector3 newDestination = hit.point;
                 agent.SetDestination(newDestination);
-                anim.Play();
+                anim?.Play();
             }
         }
     }
