@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody), typeof(AudioSource))]
 public class PickupItem : MonoBehaviour, IPickup
 {
+    public AudioClip pickupSound;
+    public AudioClip dropSound;
 
     private Transform oldParent;
     private Rigidbody rb;
-
+    private AudioSource source;
 
     void Start()
     {
         oldParent = transform.parent;
         rb = GetComponent<Rigidbody>();
+        source = GetComponent<AudioSource>();
     }
 
     public void Pickup(Transform newParent)
@@ -26,6 +29,7 @@ public class PickupItem : MonoBehaviour, IPickup
 
         transform.localPosition = Vector3.zero;
         transform.localEulerAngles = Vector3.zero;
+        source.PlayOneShot(pickupSound);
     }
 
     public void Drop(float throwPower)
@@ -33,5 +37,6 @@ public class PickupItem : MonoBehaviour, IPickup
         transform.SetParent(oldParent);
         rb.isKinematic = false;
         rb.AddForce(transform.forward * throwPower, ForceMode.VelocityChange);
+        source.PlayOneShot(dropSound);
     }
 }
